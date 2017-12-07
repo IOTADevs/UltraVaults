@@ -37,7 +37,7 @@ class VaultInventory extends ChestInventory{
 	public function __construct(Chest $tile, Int $vaultId, string $owner){
 		 parent::__construct($tile);
 		 $this->vaultId = $vaultId;
-       $this->owner = $owner;
+                 $this->owner = $owner;
 	}
 	
 	/**
