@@ -28,7 +28,7 @@ class UltraVaultsCommand extends Command{
 	 */
 	
 	public function __construct(){
-	    parent::__construct("ultravaults", "Open your vaults!", null, ["v", "pv", "uv"]);
+	    parent::__construct("ultravaults", "Open your vaults!", null, ["v", "pv", "uv", "vault"]);
 	}
 	
 	/**
@@ -42,14 +42,19 @@ class UltraVaultsCommand extends Command{
 	       $player->sendMessage(Core::getPrefix()."You cannot use that here!");
 	    return false;
 	    }
-	    if(is_numeric($args[0])){
-		   if(((Int) $args[0] <= Core::get("max.vaults") or $player->hasPermission(Core::get("perm")["open.perm"].$args[0])) and (Int) $args[0] > 0){
-			  $inv = Core::initVault($args[0], $player->getName(), $player);
-			  $player->addWindow($inv);
-			}else{
-			  $player->sendMessage(Core::getPrefix()."§7You don't have permission to open that vault!");
-			}
-		 return true;
+	    if(isset($args[0]) == false){
+	      if(is_numeric($args[0])){
+		     if(((Int) $args[0] <= Core::get("max.vaults") or $player->hasPermission(Core::get("perm")["open.perm"].$args[0])) and (Int) $args[0] > 0){
+			    $inv = Core::initVault($args[0], $player->getName(), $player);
+			    $player->addWindow($inv);
+			  }else{
+			    $player->sendMessage(Core::getPrefix()."§7You don't have permission to open that vault!");
+			  }
+		   return true;
+		   }
+		 }else{
+			$player->sendMessage(Core::getPrefix()."§7Kindly provide a vault number! /vault [1, 2, 3....]");
+       return false;
 		 }
 	    if($player->hasPermission("vault.administration")){
 		   if(in_array($args[0], $this->op_cmds)){
@@ -87,7 +92,7 @@ class UltraVaultsCommand extends Command{
 			  $player->sendMessage("§l§8»§r§7 delvault [player] [vault id] - Delete [player]'s vault");
 			}
 		}else{
-			$player->sendMessage(Core::getPrefix()."§7You don't have permission to run this command!");
+			$player->sendMessage(Core::getPrefix()."§7Kindly provide a vault number! /vault [1, 2, 3....]");
      return false;
 		}
 	return true;
