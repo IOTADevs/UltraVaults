@@ -1,1 +1,18 @@
+---
+# Developed by TheAz928
+# UltraVaults configuration file
 
+# Title or prefix format
+prefix: "&8[&r&6Rival&fCraft&8]"
+
+# Maximum vault per player (without permission)
+max.vault: 1
+
+# Vault permission settings
+# I recommend not change
+# Unless you know what you're doing
+perm:
+  open.other: vault.open.other
+  open.perm: vault. # This is the perm that players will need to open #x vault
+
+...
