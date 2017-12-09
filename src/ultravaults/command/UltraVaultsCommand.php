@@ -44,7 +44,7 @@ class UltraVaultsCommand extends Command{
 	    }
 	    if(isset($args[0])){
 	      if(is_numeric($args[0])){
-		     if((Int) $args[0] <= Core::get("max.vaults") or $player->hasPermission(Core::get("perm")["open.perm"].$args[0]) and (Int) $args[0] > 0){
+		     if(((Int) $args[0] <= Core::get("max.vault") or $player->hasPermission(Core::get("perm")["open.perm"].$args[0])) and (Int) $args[0] > 0){
 			    $inv = Core::initVault($args[0], $player->getName(), $player);
 			    $player->addWindow($inv);
 			  }else{
