@@ -56,7 +56,7 @@ class UltraVaultsCommand extends Command{
 			$player->sendMessage(Core::getPrefix()."§7Kindly provide a vault number! /vault [1, 2, 3....]");
        return false;
 		 }
-	    if($player->hasPermission("vault.administration")){
+	    if($player->hasPermission(Core::get("perm")["vault.access.other"])){
 		   if(in_array($args[0], $this->op_cmds)){
 			  switch($args[0]){
 			     case "seevault":
