@@ -1,4 +1,4 @@
-# UltraVaults
+# UltraVaults [![Poggit](https://poggit.pmmp.io/ci.shield/IOTADevs/UltraVaults/~)](https://poggit.pmmp.io/ci/IOTADevs/UltraVaults/~)
 An advanced private vaults plugin for pmmp api alpha8 and later!
 
 # Installation
