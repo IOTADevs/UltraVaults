@@ -3,6 +3,8 @@ namespace ultravaults;
 
 use pocketmine\Player;
 
+use pocketmine\item\Item;
+
 use pocketmine\plugin\PluginBase;
 
 use pocketmine\tile\Tile;
@@ -107,18 +109,22 @@ class Core extends PluginBase implements Listener{
 	
 	public static function initVault(Int $vaultId, string $owner, Player $player): ?VaultInventory{
 		 $pos = new Position($player->x, $player->y + 1, $player->z, $player->level);
+		 $name = "[".$owner."] VaultID: ".$vaultId;
 	    $nbt = Chest::createNBT($pos);
-	    $nbt->setString("CustomName", "[".$owner."] VaultID: ".$vaultId);
+       $nbt->setString("CustomName", $name);
 	    $tile = Tile::createTile("Chest", $pos->level, $nbt);
+       # var_dump($tile->hasName()); // For purposes
 	    $block = Block::get(Block::CHEST);
-	    $block->x = $tile->x;
-	    $block->y = $tile->y;
-	    $block->z = $tile->z;
-	    $block->level = $tile->level;
-	    $tile->getLevel()->sendBlocks([$player], [$block]);
+       $block->position($tile);
+       $block->getLevel()->sendBlocks([$player], [$block]);
+       $tile->spawnTo($player);
 	    $inv = new VaultInventory($tile, $vaultId, $owner);
 	    $items = self::getVaultContents($vaultId, $owner);
-	    $inv->setContents($items);
-	return $inv;
+	    foreach($items as $slot => $content){
+         if($content->getId() !== 0){
+           $inv->setItem($slot, $content);
+         }
+       }
+	    return $inv;
 	}
 }
