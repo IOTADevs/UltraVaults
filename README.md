@@ -5,7 +5,7 @@ UltraVaults is a private vaults / locker plugin which allows players to have the
 The plugin is also very customizeable (I think) for server owners
 
 # Installation
-Drop the phar downloaded from poggit or compiled zip downloaded from github.
+Drop the phar downloaded from poggit or compiled zip downloaded from github to plugins folder.
 Reload or restart server and done!
 
 # Configuration
