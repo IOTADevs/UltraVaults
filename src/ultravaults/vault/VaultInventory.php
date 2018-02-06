@@ -30,14 +30,22 @@ class VaultInventory extends ChestInventory{
 	/** @var string */
 	private $owner = "";
 	
+	/** @var Block[] */
+	private $hidden = [];
+	
 	/**
 	 * @param Chest $tile
 	 */
 	
 	public function __construct(Chest $tile, Int $vaultId, string $owner){
-		 parent::__construct($tile);
-		 $this->vaultId = $vaultId;
-                 $this->owner = $owner;
+			parent::__construct($tile);
+			$this->vaultId = $vaultId;
+       	$this->owner = $owner;
+			foreach($tile->getLevel()->getTiles() as $chest){
+				if($chest->distance($tile) <= 15 and $chest instanceof Chest and $chest->getId() !== $tile->getId()){
+					$this->hidden[] = $tile->getLevel()->getBlock($chest);
+				}
+			}
 	}
 	
 	/**
@@ -45,7 +53,7 @@ class VaultInventory extends ChestInventory{
 	 */
 	
 	public function getVaultId(): Int{
-	    return $this->vaultId;
+	    	return $this->vaultId;
 	}
 	
 	/**
@@ -53,7 +61,20 @@ class VaultInventory extends ChestInventory{
 	 */
 	
 	public function getOwner(): string{
-	    return $this->owner;
+	    	return $this->owner;
+	}
+	
+	/**
+	 * @param Player $player
+	 */
+	
+	public function onOpen(Player $player) : void{
+			foreach($this->hidden as $block){
+				$air = Block::get(Block::AIR);
+				$air->position($block);
+				$player->getLevel()->sendBlocks([$player], [$air]);
+			}
+			parent::onOpen($player);
 	}
 	
 	/**
@@ -63,16 +84,14 @@ class VaultInventory extends ChestInventory{
 	 */
 	
 	public function onClose(Player $player): void{
-	    parent::onClose($player);
-	    Core::saveVault($this->vaultId, $this->owner, $this->getContents());
-	    $this->clearAll();
-	    $block = Block::get(Block::AIR);
-	    $block->x = $this->getHolder()->getX();
-	    $block->y = $this->getHolder()->getY();
-	    $block->z = $this->getHolder()->getZ();
-	    $block->level = $this->getHolder()->getLevel();
-	    $block->getLevel()->sendBlocks([$player], [$block]);
-	    $this->getHolder()->close();
+	    	parent::onClose($player);
+	    	Core::saveVault($this->vaultId, $this->owner, $this->getContents());
+	    	$this->clearAll();
+	    	$block = Block::get(Block::AIR);
+	    	$block->position($this->getHolder());
+	    	$block->getLevel()->sendBlocks([$player], [$block]);
+			$block->getLevel()->sendBlocks([$player], $this->hidden);
+	    	$this->getHolder()->close();
 	}
 	
 	/**
